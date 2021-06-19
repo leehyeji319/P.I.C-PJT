@@ -11,7 +11,9 @@
 
 
 구동영상 
-[웹응용]20164051-이혜지.mp4
+https://github.com/zzambbang/pic-web-project/blob/146809217360d672f51d23831962836d4640384f/%5B%EC%9B%B9%EC%9D%91%EC%9A%A9%5D20164051-%EC%9D%B4%ED%98%9C%EC%A7%80.mp4
+
+
 
 ## 1. 개발 환경 구성
 Jdk 1.8
