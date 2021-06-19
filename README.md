@@ -15,7 +15,7 @@ https://github.com/zzambbang/pic-web-project/blob/146809217360d672f51d2383196283
 
 
 
-## 1. 개발 환경 구성
+## 1. 개발 환경 구성 & 사용 기술
 Jdk 1.8 | 
 MariaDB |
 Tomcat9.0 |
