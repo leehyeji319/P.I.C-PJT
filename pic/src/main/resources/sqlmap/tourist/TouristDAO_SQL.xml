@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="tourist">
+
+	<select id="selectTouristList" parameterType="com.lhj.pic.tourist.vo.TouristVO" resultType="com.lhj.pic.tourist.vo.TouristVO">
+		SELECT
+			A.tourist_idx
+			, A.tourist_name
+			, A.tourist_address
+			, A.category_code
+			, (SELECT X.category_name FROM category X WHERE X.category_code = A.category_code) AS category_name
+			, B.tourist_picture_idx
+			, B.tourist_picture_uid
+			, B.file_name
+			, B.file_ext
+			, B.file_physical_path
+			, IF((SELECT COUNT(1) FROM user_pic_history X WHERE X.user_idx = #{user_idx} AND X.tourist_idx = A.tourist_idx) = 0, 'N', 'Y') AS pic_yn
+		FROM tourist A
+		INNER JOIN tourist_picture B
+		ON A.tourist_idx = B.tourist_idx
+	</select>
+    
+	<insert id="insertTouristPICHistory" parameterType="com.lhj.pic.tourist.vo.TouristVO">
+		INSERT INTO user_pic_history(
+			user_idx
+			, tourist_idx
+			, pic_date
+		)VALUES(
+			#{user_idx}
+			, #{tourist_idx}
+			, now()
+		)
+    </insert>
+    
+	<delete id="deleteTouristPICHistory" parameterType="com.lhj.pic.tourist.vo.TouristVO">
+		DELETE FROM user_pic_history
+		WHERE 1=1
+		AND user_idx = #{user_idx}
+		AND tourist_idx = #{tourist_idx}
+    </delete>
+    
+</mapper>

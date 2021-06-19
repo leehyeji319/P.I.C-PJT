@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="user">
+
+	<select id="selectUserMyPageList" parameterType="com.lhj.pic.tourist.vo.TouristVO" resultType="com.lhj.pic.tourist.vo.TouristVO">
+		SELECT
+			A.tourist_idx
+			, A.tourist_name
+			, A.tourist_address
+			, A.category_code
+			, (SELECT X.category_name FROM category X WHERE X.category_code = A.category_code) AS category_name
+			, B.tourist_picture_idx
+			, B.tourist_picture_uid
+			, B.file_name
+			, B.file_ext
+			, B.file_physical_path
+			, IF((SELECT COUNT(1) FROM user_pic_history X WHERE X.user_idx = #{user_idx} AND X.tourist_idx = A.tourist_idx) = 0, 'N', 'Y') AS pic_yn
+		FROM tourist A
+		INNER JOIN tourist_picture B
+		ON A.tourist_idx = B.tourist_idx
+		INNER JOIN user_pic_history C
+		ON A.tourist_idx = C.tourist_idx
+		WHERE 1=1
+		AND C.user_idx = #{user_idx} 
+	</select>
+	
+	<select id="selectUser" parameterType="com.lhj.pic.user.vo.UserVO" resultType="com.lhj.pic.user.vo.UserVO">
+		SELECT
+			user_idx
+			, id
+			, user_name
+			, join_date
+		FROM user
+		WHERE 1=1
+		AND id = #{id}
+		AND pw = #{pw}
+	</select>
+	
+	<select id="selectUserDuplicationCheck" parameterType="com.lhj.pic.user.vo.UserVO" resultType="java.lang.Integer">
+		SELECT count(1)
+		FROM user
+		WHERE 1=1
+		AND id = #{id}
+	</select>
+    
+	<insert id="insertUser" parameterType="com.lhj.pic.user.vo.UserVO">
+    	INSERT INTO user(
+    		id,
+			pw,
+			user_name,
+			join_date
+    	)VALUE(
+			#{id},
+			#{pw},
+			#{user_name},
+			now()
+    	)
+    </insert>
+    
+</mapper>
